@@ -39,6 +39,7 @@ class SplunkProvider:
         self.custom_queries = customQueries
         logging.info("ATTENTION PYTHON CUSTOMQUERRY")
         logging.info(customQueries)
+        raise ValueError("token : "+token+" host : "+host+" port : " + str(port))
 
     def get_sli(
         self, metric: str, start_time: str, end_time: str
