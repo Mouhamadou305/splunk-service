@@ -15,18 +15,18 @@ class SplunkProvider:
         labels: Dict[str, str] = None,
         customQueries= "",
         host: str="",
-        username: str="",
-        password: str="",
+        username: str="admin",
+        password: str="mypassword",
         token: str="",
         autologin= True,
         port: str="8089"
     ) -> None:
         if(username!="" and password!=""):
             #connecting using username and password
-            self.splunkService = client.connect(host=host, port=int(port), username=username, password=password, autologin=autologin, scheme="https", basic=True)
+            self.splunkService = client.connect(host=host, port=int(port), username=username, password=password, autologin=autologin, scheme="https")
         elif(token!="" and host!=""):
             #connecting using bearer token
-            self.splunkService = client.connect(host=host, port=int(port), splunkToken=token, autologin=autologin, scheme="https", basic=True)
+            self.splunkService = client.connect(host=host, port=int(port), splunkToken=token, autologin=autologin, scheme="https")
         else:
             logging.info("Connection credentials are invalid")
             
@@ -39,7 +39,7 @@ class SplunkProvider:
         self.custom_queries = customQueries
         logging.info("ATTENTION PYTHON CUSTOMQUERRY")
         logging.info(customQueries)
-        raise ValueError("token : "+token+" host : "+host+" port : " + str(port))
+        #raise ValueError("token : "+token+" host : "+host+" port : " + str(port))
 
     def get_sli(
         self, metric: str, start_time: str, end_time: str
@@ -96,15 +96,15 @@ class SplunkProvider:
 
         return start_unix, end_unix
     
-#if __name__=="__main__":
- #   sli = SplunkProvider(
-  #      project='test-splunk',
-   #     stage='qa',
-    #    service='helloservice',
-     #   labels={},
-      #  customQueries={"test_query" : "|inputcsv test.csv | stats count"}, 
-       # host='localhost', token='eyJraWQiOiJzcGx1bmsuc2VjcmV0IiwiYWxnIjoiSFM1MTIiLCJ2ZXIiOiJ2MiIsInR0eXAiOiJzdGF0aWMifQ.eyJpc3MiOiJhZG1pbiBmcm9tIG1vdWhhbWFkb3UtVmlydHVhbEJveCIsInN1YiI6ImFkbWluIiwiYXVkIjoia2VwdG4iLCJpZHAiOiJTcGx1bmsiLCJqdGkiOiI0OTM0OTVjNTI4MmU3ZWQwOTRmZGUwY2IzMmIxMzk3NjE2NWY2ZmExYWJiMjEzNmVmMzZkZDUwOTJjM2ViMDk5IiwiaWF0IjoxNjc5ODYwODk4LCJleHAiOjE2ODUwNDQ4OTgsIm5iciI6MTY3OTg2MDg5OH0.7JxH64w-KyEg07Jnxv4923fRq96jHg7s8ybtm7sz667goKhBTk7cGg_tQy46JAn73WXexlZ_cIYo7nU1fxZD1A',
-        #port=8089).get_sli('test_query', '2023-03-21T22:00:43.940','2023-03-21T22:02:50.940')
-  #  sli= SplunkProvider(project='fulltour',stage='qa',service='helloservice',labels={}, customQueries={'test_query' : '|inputcsv test.csv | stats count'}, host='localhost', token='eyJraWQiOiJzcGx1bmsuc2VjcmV0IiwiYWxnIjoiSFM1MTIiLCJ2ZXIiOiJ2MiIsInR0eXAiOiJzdGF0aWMifQ.eyJpc3MiOiJhZG1pbiBmcm9tIG1vdWhhbWFkb3UtVmlydHVhbEJveCIsInN1YiI6ImFkbWluIiwiYXVkIjoia2VwdG4iLCJpZHAiOiJTcGx1bmsiLCJqdGkiOiI0OTM0OTVjNTI4MmU3ZWQwOTRmZGUwY2IzMmIxMzk3NjE2NWY2ZmExYWJiMjEzNmVmMzZkZDUwOTJjM2ViMDk5IiwiaWF0IjoxNjc5ODYwODk4LCJleHAiOjE2ODUwNDQ4OTgsIm5iciI6MTY3OTg2MDg5OH0.7JxH64w-KyEg07Jnxv4923fRq96jHg7s8ybtm7sz667goKhBTk7cGg_tQy46JAn73WXexlZ_cIYo7nU1fxZD1A', port='8089').get_sli('test_query', '2023-04-03T04:40:03.880','2023-04-03T04:42:03.880')
-   # print(sli)
+if __name__=="__main__":
+    sli = SplunkProvider(
+        project='test-splunk',
+        stage='qa',
+        service='helloservice',
+        labels={},
+        customQueries={"test_query" : "|inputcsv test.csv | stats count"}, 
+        host='40.76.159.167', token='eyJraWQiOiJzcGx1bmsuc2VjcmV0IiwiYWxnIjoiSFM1MTIiLCJ2ZXIiOiJ2MiIsInR0eXAiOiJzdGF0aWMifQ.eyJpc3MiOiJhZG1pbiBmcm9tIHNwbHVuay1lbnRyZXByaXNlLWRlcGxveW1lbnQtNzc2YzY0Yzc5Ni1ocDdzNyIsInN1YiI6ImFkbWluIiwiYXVkIjoia2VwdG4iLCJpZHAiOiJTcGx1bmsiLCJqdGkiOiI2YjUxMDUzZjc4NTUyZjY3ZmQ3MGNjMmEyZjZhM2E3NjYwYjU0ZTU1N2JjMDc4YjgyZDQxMWQyODQwNGU1ODhiIiwiaWF0IjoxNjgyNTM1NzM3LCJleHAiOjE2ODI1MzU3OTcsIm5iciI6MTY4MjUzNTczN30.mJVZBQd1XmhUVBn1ZdK2jv0HiQe2vKmZvnXy05enWmPcYgkV5PvU2mYvBwMEirTfdW3JgUvL8HNNI5NXkxP4QQ',
+        port=8089).get_sli('test_query', '2023-03-21T22:00:43.940','2023-03-21T22:02:50.940')
+    sli= SplunkProvider(project='fulltour',stage='qa',service='helloservice',labels={}, customQueries={'test_query' : '|inputcsv test.csv | stats count'}, host='40.76.159.167', token='eyJraWQiOiJzcGx1bmsuc2VjcmV0IiwiYWxnIjoiSFM1MTIiLCJ2ZXIiOiJ2MiIsInR0eXAiOiJzdGF0aWMifQ.eyJpc3MiOiJhZG1pbiBmcm9tIHNwbHVuay1lbnRyZXByaXNlLWRlcGxveW1lbnQtNzc2YzY0Yzc5Ni1ocDdzNyIsInN1YiI6ImFkbWluIiwiYXVkIjoia2VwdG4iLCJpZHAiOiJTcGx1bmsiLCJqdGkiOiI2YjUxMDUzZjc4NTUyZjY3ZmQ3MGNjMmEyZjZhM2E3NjYwYjU0ZTU1N2JjMDc4YjgyZDQxMWQyODQwNGU1ODhiIiwiaWF0IjoxNjgyNTM1NzM3LCJleHAiOjE2ODI1MzU3OTcsIm5iciI6MTY4MjUzNTczN30.mJVZBQd1XmhUVBn1ZdK2jv0HiQe2vKmZvnXy05enWmPcYgkV5PvU2mYvBwMEirTfdW3JgUvL8HNNI5NXkxP4QQ', port='8089').get_sli('test_query', '2023-04-03T04:40:03.880','2023-04-03T04:42:03.880')
+    print(sli)
     
