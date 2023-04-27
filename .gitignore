@@ -1,6 +1,3 @@
-splunkChart.tgz
-sli.yaml
-slo.yaml
 helloservice.tgz
 job-executor
 workflows/

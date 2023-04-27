@@ -1,0 +1,5 @@
+---
+spec_version: '1.0'
+indicators:
+  test_query: "|inputcsv test.csv | stats count"
+  test_query2: "|inputcsv requests.csv | stats count"
